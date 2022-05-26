@@ -2,30 +2,31 @@
 
 // set up ======================================================================
 // get all the tools we need
-var express  = require('express');
-var app      = express();
-var port     = process.env.PORT || 8080;
+const express  = require('express');
+const app      = express();
+const port     = process.env.PORT || 8080;
 const MongoClient = require('mongodb').MongoClient
-var mongoose = require('mongoose');
-var passport = require('passport');
-var flash    = require('connect-flash');
-
-var morgan       = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
-var session      = require('express-session');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const flash    = require('connect-flash');
+let morgan       = require('morgan');
+let cookieParser = require('cookie-parser');
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useUnifiedTopology', true);
+let bodyParser   = require('body-parser');
+let session      = require('express-session');
 
 var configDB = require('./config/database.js');
 
 var db
 
 // configuration ===============================================================
-mongoose.connect(configDB.url, (err, database) => {
+mongoose.connect(configDB.url, (err, database) => { //connecting to database. pass in url from configdb
   if (err) return console.log(err)
-  db = database
-  require('./app/routes.js')(app, passport, db);
+  db = database //connection to database is stored in db
+  require('./app/routes.js')(app, passport, db); //run function from routes js
+  //creates API for app
 }); // connect to our database
-
 require('./config/passport')(passport); // pass passport for configuration
 
 // set up our express application
